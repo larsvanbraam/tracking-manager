@@ -52,10 +52,7 @@ export default class BingProvider extends AbstractTrackingProvider<IBingProvider
           const s = n.readyState;
           (s && s !== 'loaded' && s !== 'complete') ||
             (f(), (n.onload = n.onreadystatechange = null));
-          // Log the status
-          this.logger(`Loaded`);
-          // Notify about the API being ready
-          this.providerReadyResolveMethod();
+          this.handleApiLoaded();
         }),
         (i = d.getElementsByTagName(t)[0]),
         i.parentNode.insertBefore(n, i);

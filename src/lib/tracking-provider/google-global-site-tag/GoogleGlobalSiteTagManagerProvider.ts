@@ -75,10 +75,7 @@ export default class GoogleGlobalSiteTagManagerProvider extends AbstractTracking
         'config',
         this.providerOptions.trackingId,
       );
-      // Log the status
-      this.logger(`Loaded`);
-      // Notify about the API being ready
-      this.providerReadyResolveMethod();
+      this.handleApiLoaded();
     });
   }
 

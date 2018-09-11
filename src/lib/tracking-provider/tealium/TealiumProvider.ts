@@ -6,13 +6,17 @@ import TrackingManager from '../../TrackingManager';
 /**
  * This class provides a tracking provider that can be used for utag Tealium tracking, for more information please
  * check the official documentation:
- * - https://community.tealiumiq.com/t5/JavaScript-utag-js/Adding-utag-js-to-your-site/ta-p/14785
+ * https://community.tealiumiq.com/t5/JavaScript-utag-js/Adding-utag-js-to-your-site/ta-p/14785
  *
  * Example usage:
  * ```typescript
  * new TealiumProvider({
- *   trackingId: '',
- * }
+ *   url: 'https://tags.tiqcdn.com/utag/{account}/{profile}/{environment}/utag.js',
+ *   pageCategory: 'foo',
+ *   pageName: 'bar',
+ * });
+ *
+ *
  * ```
  *
  * @class TealiumProvider

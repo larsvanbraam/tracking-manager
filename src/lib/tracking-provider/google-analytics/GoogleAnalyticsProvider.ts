@@ -44,10 +44,7 @@ export default class GoogleAnalyticsProvider extends AbstractTrackingProvider<IG
       a.async = 1;
       a.src = g;
       m.parentNode.insertBefore(a, m);
-      // Log the status
-      this.logger(`Loaded`);
-      // Notify about the API being ready
-      this.providerReadyResolveMethod();
+      this.handleApiLoaded();
     })(
       window,
       document,

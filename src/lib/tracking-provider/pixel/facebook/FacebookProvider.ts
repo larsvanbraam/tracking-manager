@@ -55,10 +55,7 @@ export default class FacebookProvider extends AbstractTrackingProvider<IFacebook
 
     window[FacebookProvider._NAMESPACE]('init', this.providerOptions.trackingPixelId);
 
-    // Log the status
-    this.logger(`Loaded`);
-    // Notify about the API being ready
-    this.providerReadyResolveMethod();
+    this.handleApiLoaded();
   }
 
   /**

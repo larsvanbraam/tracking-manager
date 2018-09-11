@@ -48,10 +48,7 @@ export default class TwitterProvider extends AbstractTrackingProvider<ITwitterPr
     /* tslint:enable */
 
     window[TwitterProvider.NAMESPACE]('init', this.providerOptions.trackingPixelId);
-    // Notify about the API being ready
-    this.providerReadyResolveMethod();
-    // Log the status
-    this.logger(`Loaded`);
+    this.handleApiLoaded();
   }
 
   /**

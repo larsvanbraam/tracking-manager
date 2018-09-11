@@ -48,15 +48,7 @@ export default class HotjarProvider extends AbstractTrackingProvider<IHotjarProv
       r = o.createElement('script');
       r.async = 1;
       r.src = t + h['_hjSettings']['hjid'] + j + h['_hjSettings']['hjsv'];
-      r.onload = () => {
-        // Log the status
-        this.logger(`Loaded`);
-        // Notify about the API being ready
-        this.providerReadyResolveMethod();
-      };
-      r.onerror = () => {
-        console.log('error?');
-      };
+      r.onload = () => this.handleApiLoaded();
       a.appendChild(r);
     })(window, document, '//static.hotjar.com/c/hotjar-', '.js?sv=');
     /* tslint:enable */
