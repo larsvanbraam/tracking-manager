@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>TrackingManager example</title>
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cosmo/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github-gist.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <style>
+    body {
+      padding-top: 75px;
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+
+    section, p, table {
+      margin-bottom: 20px;
+    }
+
+    .icon {
+      width: 20px;
+      height: 20px;
+      font-size: 20px;
+      display: inline-block;
+      position: relative;
+    }
+
+
+    .glyphicon-ok {
+      color: green;
+    }
+
+    .glyphicon-remove {
+      color: red;
+    }
+
+    [disabled] {
+      opacity: 0.5;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-default navbar-fixed-top">
+    <a class="navbar-brand" href="/">TrackingManager example</a>
+  </nav>
+  <main role="main" class="container" id="app">
+    <section>
+      <h3 id="introduction">Code</h3>
+      <p>The tracking manager is a wrapper class that you can add tracking providers to to make page tracking a little bit more organized.</p>
+      <p>The easiest way to enable it is create a tracking manager instance and provide your desired tracking providers</p>
+      <pre>const trackingManager = new TrackingManager({
+  providers: {
+    ga: new GoogleAnalyticsTrackingProvider({
+      trackingId: 'UA-XXXXXXX',
+    }),
+    fbq: new FacebookTrackingPixelProvider({
+      : 'XXXXXXXXXX',
+    }),
+  }
+ });</pre>
+      <p>After this you can trigger the tracking events on your tracking manager</p>
+      <pre>
+trackingManager.trackEvent({
+  ga: {
+    label: 'Purchase',
+    category: 'shop'
+  },
+  fbq: {
+    event: 'Purchase',
+  },
+});
+      </pre>
+    </section>
+    <section>
+      <h3 id="example">Demo</h3>
+      <p>To view the result open up the console or <a href="https://www.charlesproxy.com/" target="_blank">Charles</a> and check the network requests to see the data that is send. The trackingManager uses <a href="https://www.npmjs.com/package/debug" target="_blank">debug</a> to log. Open up the console and paste in the following to view the TaskLoader events.</p>
+      <pre>localStorage.debug = 'trackingManager:*'</pre>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Provider</th>
+            <th scope="col">Api loaded</th>
+            <th scope="col">TrackEvent</th>
+            <th scope="col">TrackPageView</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(provider, index) in providers" :key="index">
+          <td scope="row" v-text="index + 1"></td>
+          <td v-text="provider.id"></td>
+          <td>
+            <span v-if="provider.ready" class="icon glyphicon glyphicon-ok"></span>
+            <span v-if="!provider.ready" class="icon glyphicon glyphicon-remove"></span>
+          </td>
+          <td>
+            <button :disabled="!provider.ready" class="btn-sm btn-primary" @click="handleTrackEvent(provider.id, provider.data.event)">
+              Trigger event
+            </button>
+          </td>
+          <td>
+            <button :disabled="!provider.ready" class="btn-sm btn-primary" @click="handleTrackPageView(provider.id, provider.data.pageView)">
+              Trigger page view
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <p><strong>Note:</strong> Some providers will not work because they will only work with valid tracking id's or urls</p>
+    </section>
+  </main>
+</body>
+<script src="./bundle.js"></script>
+</html>
