@@ -54,7 +54,7 @@ export default class TrackingManager extends Disposable {
     [id: string]: AbstractTrackingProvider<any>;
   } = {};
 
-  constructor(options: ITrackingManagerOptions) {
+  constructor(options?: ITrackingManagerOptions) {
     super();
 
     // Store the provided options
@@ -97,22 +97,34 @@ export default class TrackingManager extends Disposable {
   }
 
   /**
+   * Method that retrieves all the tracking providers
+   *
+   * @returns { {[id:string}:AbstractTrackingProvider<any> }
+   */
+  public getTrackingProviders(): { [id: string]: AbstractTrackingProvider<any> } {
+    return this.providers;
+  }
+
+  /**
    * Loop through all the providers and trigger an event
    *
-   * @param {{[provider: string]: any}} data
-   * @returns {void}
+   * @param {{[provider: string]: any}} data The providers that should be tracked
+   * @returns {<Promise<Array<void>>}
    */
-  public trackEvent(data: { [provider: string]: any }): void {
-    Object.keys(data).forEach(id => this.providers[id].trackEvent(data[id]));
+  public trackEvent(data: { [provider: string]: any }): Promise<Array<void>> {
+    return Promise.all(Object.keys(data).map(id => this.providers[id].trackEvent(data[id])));
   }
 
   /**
    * Loop through all the providers and trigger a page view
    *
-   * @param {{[provider: string]: any}} data
+   * @param {{[provider: string]: any}} data The providers that should be tracked
+   * @returns {<Promise<Array<void>>}
    */
-  public trackPageView(data: { [provider: string]: any }): void {
-    Object.keys(data).forEach((id: string) => this.providers[id].trackPageView(data[id]));
+  public trackPageView(data: { [provider: string]: any }): Promise<Array<void>> {
+    return Promise.all(
+      Object.keys(data).map((id: string) => this.providers[id].trackPageView(data[id])),
+    );
   }
 
   /**

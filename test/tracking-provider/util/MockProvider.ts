@@ -1,5 +1,5 @@
-import AbstractTrackingProvider from '../src/lib/tracking-provider/AbstractTrackingProvider';
-import TrackingManager from '../src/lib/TrackingManager';
+import AbstractTrackingProvider from '../../../src/lib/tracking-provider/AbstractTrackingProvider';
+import TrackingManager from '../../../src/lib/TrackingManager';
 import debug from 'debug';
 
 export default class MockProvider extends AbstractTrackingProvider<any> {
@@ -10,7 +10,6 @@ export default class MockProvider extends AbstractTrackingProvider<any> {
    */
   protected init(): void {
     this.logger = debug(`${TrackingManager.LOG_NAMESPACE}:mockProvider`);
-
     this.handleApiLoaded();
   }
 

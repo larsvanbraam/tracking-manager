@@ -1,5 +1,5 @@
 import AbstractTrackingProvider from './AbstractTrackingProvider';
-import { LoadScriptTask } from 'task-loader';
+import LoadScriptTask from 'task-loader/lib/task/LoadScriptTask';
 
 /**
  * This class is one level above the base class for all the tracking providers, a lot of tracking providers require
