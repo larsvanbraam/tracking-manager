@@ -1,6 +1,5 @@
 import { default as _export } from './lib/TrackingManager';
 
-export { default as TealiumProvider } from './lib/tracking-provider/tealium/TealiumProvider';
 export {
   default as BingTrackingPixelProvider,
 } from './lib/tracking-provider/pixel/bing/BingProvider';

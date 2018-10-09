@@ -1,7 +1,6 @@
-/* global hljs */
+/* eslint-disable no-new */
 import Vue from 'vue/dist/vue.esm';
 import TrackingProvider from './TrackingProvider';
-import TealiumProvider from '../../src/lib/tracking-provider/tealium/TealiumProvider';
 import BingProvider from '../../src/lib/tracking-provider/pixel/bing/BingProvider';
 import EnsightenProvider from '../../src/lib/tracking-provider/ensighten/EnsightenProvider';
 import FacebookProvider from '../../src/lib/tracking-provider/pixel/facebook/FacebookProvider';
@@ -16,33 +15,14 @@ import PardotProvider from '../../src/lib/tracking-provider/pardot/PardotProvide
 import TwitterProvider from '../../src/lib/tracking-provider/pixel/twitter/TwitterProvider';
 import TrackingManager from '../../src/lib/TrackingManager';
 
-console.log('init the vue app');
+// Globally expose some objects so we can run tests against them.
+window.cypress = {};
 
-/* eslint-disable no-new */
+/* global hljs */
 new Vue({
   el: '#app',
   data: {
     providers: [
-      {
-        constructor: TealiumProvider,
-        id: TrackingProvider.TEALIUM_PROVIDER,
-        ready: false,
-        options: {
-          url: 'https://tags.tiqcdn.com/utag/foo/bar/dev/utag.js',
-          pageCategory: 'bar',
-          pageName: 'fooPage',
-        },
-        data: {
-          event: {
-            page_category: 'foo',
-            page_event: 'bar',
-          },
-          pageView: {
-            event_category: 'foo',
-            event_name: 'bar',
-          },
-        },
-      },
       {
         constructor: BingProvider,
         id: TrackingProvider.BING_PROVIDER,
@@ -242,6 +222,9 @@ new Vue({
 
     this.trackingManager = new TrackingManager();
 
+    // Expose for cypress
+    window.cypress.trackingManager = this.trackingManager;
+
     // Initialise all the providers
     this.providers.forEach(provider => {
       const instance = new provider.constructor(provider.options);
@@ -251,6 +234,9 @@ new Vue({
         .catch(() => Vue.set(provider, 'ready', false));
       // Add it to the tracking manager
       this.trackingManager.addProvider(provider.id, instance);
+
+      // Expose for cypress
+      window.cypress[provider.id] = instance;
     });
   },
   methods: {

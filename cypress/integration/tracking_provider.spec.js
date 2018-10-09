@@ -1,49 +1,50 @@
 /* eslint-disable */
-import chaiAsPromised from 'chai-as-promised';
 import TrackingProvider from '../../example/src/TrackingProvider';
 
-chai.use(chaiAsPromised);
 
 describe('TrackingProviders', () => {
+  // We store the spies in an object so we can use them later on
+  const spies = {};
+
   beforeEach(() => {
-    cy.visit('http://localhost:8080');
+    cy.visit('http://localhost:8080', {
+      onLoad(window) {
+        Object.values(TrackingProvider).forEach(provider => {
+          spies[provider] = {
+            trackEvent: cy.spy(window.cypress[provider], 'trackEvent'),
+            trackPageView: cy.spy(window.cypress[provider], 'trackPageView'),
+          };
+        });
+      },
+    });
   });
 
   Object.values(TrackingProvider).forEach(provider => {
     describe(provider, () => {
-      switch (provider) {
-        case TrackingProvider.TEALIUM_PROVIDER:
-          // The Tealium provider will always fail because of incorrect credentials
-          it('Should should fail loading the API, because of incorrect credentials', () => {
-            const button = cy.get(`[data-provider="${provider}"] [data-cy="event-button"]`);
+      // Dynamically create all the tests because they are the same for all providers
+      it('Should trigger the track event action', () => {
+        const button = cy.get(`[data-provider="${provider}"] [data-cy="event-button"]`);
 
-            // The button should be disabled
-            button.should('be.disabled');
-          });
-          break;
-        default:
-          // Dynamically create all the tests because they are the same for all providers
-          it('Should trigger the track event action', () => {
-            const button = cy.get(`[data-provider="${provider}"] [data-cy="event-button"]`);
+        // The button should not be disabled
+        button.should('not.be.disabled');
 
-            // The button should not be disabled
-            button.should('not.be.disabled');
+        // Trigger the click
+        button.click().then(() => {
+          expect(spies[provider].trackEvent).to.be.called;
+        });
+      });
 
-            // Trigger the click
-            expect(button.click()).to.be.fulfilled;
-          });
+      it('Should trigger the track page action', () => {
+        const button = cy.get(`[data-provider="${provider}"] [data-cy="page-button"]`);
 
-          it('Should trigger the track page action', () => {
-            const button = cy.get(`[data-provider="${provider}"] [data-cy="page-button"]`);
+        // The button should not be disabled
+        button.should('not.be.disabled');
 
-            // The button should not be disabled
-            button.should('not.be.disabled');
-
-            // Trigger the click
-            expect(button.click()).to.be.fulfilled;
-          });
-          break;
-      }
+        // Trigger the click
+        button.click().then(() => {
+          expect(spies[provider].trackPageView).to.be.called;
+        });
+      });
     });
   });
 });

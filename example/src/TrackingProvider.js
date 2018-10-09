@@ -1,5 +1,4 @@
 export default {
-  TEALIUM_PROVIDER: 'TealiumProvider',
   BING_PROVIDER: 'BingProvider',
   ENSIGHTEN_PROVIDER: 'EnsightenProvider',
   FACEBOOK_PROVIDER: 'FacebookProvider',
