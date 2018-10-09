@@ -87,7 +87,7 @@ trackingManager.trackEvent({
           </tr>
         </thead>
         <tbody>
-          <tr v-for="(provider, index) in providers" :key="index">
+          <tr v-for="(provider, index) in providers" :key="index" :data-provider="provider.id">
           <td scope="row" v-text="index + 1"></td>
           <td v-text="provider.id"></td>
           <td>
@@ -95,12 +95,12 @@ trackingManager.trackEvent({
             <span v-if="!provider.ready" class="icon glyphicon glyphicon-remove"></span>
           </td>
           <td>
-            <button :disabled="!provider.ready" class="btn-sm btn-primary" @click="handleTrackEvent(provider.id, provider.data.event)">
+            <button :disabled="!provider.ready" data-cy="event-button" class="btn-sm btn-primary" @click="handleTrackEvent(provider.id, provider.data.event)">
               Trigger event
             </button>
           </td>
           <td>
-            <button :disabled="!provider.ready" class="btn-sm btn-primary" @click="handleTrackPageView(provider.id, provider.data.pageView)">
+            <button :disabled="!provider.ready" data-cy="page-button"  class="btn-sm btn-primary" @click="handleTrackPageView(provider.id, provider.data.pageView)">
               Trigger page view
             </button>
           </td>

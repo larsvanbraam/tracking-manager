@@ -1,5 +1,6 @@
 /* global hljs */
 import Vue from 'vue/dist/vue.esm';
+import TrackingProvider from './TrackingProvider';
 import TealiumProvider from '../../src/lib/tracking-provider/tealium/TealiumProvider';
 import BingProvider from '../../src/lib/tracking-provider/pixel/bing/BingProvider';
 import EnsightenProvider from '../../src/lib/tracking-provider/ensighten/EnsightenProvider';
@@ -15,6 +16,8 @@ import PardotProvider from '../../src/lib/tracking-provider/pardot/PardotProvide
 import TwitterProvider from '../../src/lib/tracking-provider/pixel/twitter/TwitterProvider';
 import TrackingManager from '../../src/lib/TrackingManager';
 
+console.log('init the vue app');
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
@@ -22,7 +25,7 @@ new Vue({
     providers: [
       {
         constructor: TealiumProvider,
-        id: 'TealiumProvider',
+        id: TrackingProvider.TEALIUM_PROVIDER,
         ready: false,
         options: {
           url: 'https://tags.tiqcdn.com/utag/foo/bar/dev/utag.js',
@@ -42,7 +45,7 @@ new Vue({
       },
       {
         constructor: BingProvider,
-        id: 'BingTrackingPixelProvider',
+        id: TrackingProvider.BING_PROVIDER,
         ready: false,
         options: {
           trackingPixelId: '00000',
@@ -59,7 +62,7 @@ new Vue({
       },
       {
         constructor: EnsightenProvider,
-        id: 'EnsightenProvider',
+        id: TrackingProvider.ENSIGHTEN_PROVIDER,
         ready: false,
         options: {
           trackingName: 'foo',
@@ -82,7 +85,7 @@ new Vue({
       },
       {
         constructor: FacebookProvider,
-        id: 'FacebookTrackingPixelProvider',
+        id: TrackingProvider.FACEBOOK_PROVIDER,
         ready: false,
         options: {
           trackingPixelId: '00000',
@@ -99,7 +102,7 @@ new Vue({
       },
       {
         constructor: ForensicsProvider,
-        id: 'ForensicsProvider',
+        id: TrackingProvider.FORENSICS_PROVIDER,
         ready: false,
         options: {
           trackingId: '00000',
@@ -111,7 +114,7 @@ new Vue({
       },
       {
         constructor: GoogleAnalyticsProvider,
-        id: 'GoogleAnalyticsProvider',
+        id: TrackingProvider.GOOGLE_ANALYTICS_PROVIDER,
         ready: false,
         options: {
           trackingId: '00000',
@@ -130,7 +133,7 @@ new Vue({
       },
       {
         constructor: GoogleGlobalSiteTagManagerProvider,
-        id: 'GoogleGlobalSiteTagProvider',
+        id: TrackingProvider.GOOGLE_GLOBAL_SITE_TAG_MANAGER_PROVIDER,
         ready: false,
         options: {
           namespace: 'foo',
@@ -152,7 +155,7 @@ new Vue({
       },
       {
         constructor: HotjarProvider,
-        id: 'HotjarProvider',
+        id: TrackingProvider.HOTJAR_PROVIDER,
         ready: false,
         options: {
           trackingId: '00000',
@@ -164,7 +167,7 @@ new Vue({
       },
       {
         constructor: LinkedInProvider,
-        id: 'LinkedInTrackingPixelProvider',
+        id: TrackingProvider.LINKED_IN_PROVIDER,
         ready: false,
         options: {
           trackingPixelId: '00000',
@@ -176,7 +179,7 @@ new Vue({
       },
       {
         constructor: MediaMathProvider,
-        id: 'MediaMathProvider',
+        id: TrackingProvider.MEDIA_MATH_PROVIDER,
         ready: false,
         options: {
           trackingId: '00000',
@@ -188,7 +191,7 @@ new Vue({
       },
       {
         constructor: NativoProvider,
-        id: 'NativoTrackingPixelProvider',
+        id: TrackingProvider.NATIVO_PROVIDER,
         ready: false,
         options: {
           trackingPixelId: '00000',
@@ -200,7 +203,7 @@ new Vue({
       },
       {
         constructor: PardotProvider,
-        id: 'PardotProvider',
+        id: TrackingProvider.PARDOT_PROVIDER,
         ready: false,
         options: {
           clientId: '00000',
@@ -214,7 +217,7 @@ new Vue({
       },
       {
         constructor: TwitterProvider,
-        id: 'TwitterTrackingPixelProvider',
+        id: TrackingProvider.TWITTER_PROVIDER,
         ready: false,
         options: {
           trackingPixelId: '00000',
@@ -252,12 +255,12 @@ new Vue({
   },
   methods: {
     handleTrackEvent(providerId, data) {
-      this.trackingManager.trackEvent({
+      return this.trackingManager.trackEvent({
         [providerId]: data,
       });
     },
     handleTrackPageView(providerId, data) {
-      this.trackingManager.trackPageView({
+      return this.trackingManager.trackPageView({
         [providerId]: data,
       });
     },

@@ -1,8 +1,10 @@
 const path = require('path');
 
 module.exports = {
+  entry: './example/src/index.js',
   devServer: {
-    contentBase: './',
+    contentBase: './example',
+    compress: true,
   },
   resolve: {
     extensions: ['.js', '.ts'],
@@ -16,7 +18,7 @@ module.exports = {
     ],
   },
   output: {
-    path: path.resolve(__dirname, '../'),
+    path: path.resolve(__dirname, '../../../example/'),
     filename: 'bundle.js',
   },
 };
