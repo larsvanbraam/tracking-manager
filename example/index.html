@@ -46,6 +46,43 @@
   </nav>
   <main role="main" class="container" id="app">
     <section>
+      <h3 id="example">Demo</h3>
+      <p>To view the result open up the console or <a href="https://www.charlesproxy.com/" target="_blank">Charles</a> and check the network requests to see the data that is send. The trackingManager uses <a href="https://www.npmjs.com/package/debug" target="_blank">debug</a> to log. Open up the console and paste in the following to view the TaskLoader events.</p>
+      <pre>localStorage.debug = 'trackingManager:*'</pre>
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Provider</th>
+          <th scope="col">Api loaded</th>
+          <th scope="col">TrackEvent</th>
+          <th scope="col">TrackPageView</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="(provider, index) in providers" :key="index">
+          <td scope="row" v-text="index + 1"></td>
+          <td v-text="provider.id"></td>
+          <td>
+            <span v-if="provider.ready" class="icon glyphicon glyphicon-ok"></span>
+            <span v-if="!provider.ready" class="icon glyphicon glyphicon-remove"></span>
+          </td>
+          <td>
+            <button :disabled="!provider.ready" class="btn-sm btn-primary" @click="handleTrackEvent(provider.id, provider.data.event)">
+              Trigger event
+            </button>
+          </td>
+          <td>
+            <button :disabled="!provider.ready" class="btn-sm btn-primary" @click="handleTrackPageView(provider.id, provider.data.pageView)">
+              Trigger page view
+            </button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <p><strong>Note:</strong> Some providers will not work because they will only work with valid tracking id's or urls</p>
+    </section>
+    <section>
       <h3 id="introduction">Code</h3>
       <p>The tracking manager is a wrapper class that you can add tracking providers to to make page tracking a little bit more organized.</p>
       <p>The easiest way to enable it is create a tracking manager instance and provide your desired tracking providers</p>
@@ -71,43 +108,6 @@ trackingManager.trackEvent({
   },
 });
       </pre>
-    </section>
-    <section>
-      <h3 id="example">Demo</h3>
-      <p>To view the result open up the console or <a href="https://www.charlesproxy.com/" target="_blank">Charles</a> and check the network requests to see the data that is send. The trackingManager uses <a href="https://www.npmjs.com/package/debug" target="_blank">debug</a> to log. Open up the console and paste in the following to view the TaskLoader events.</p>
-      <pre>localStorage.debug = 'trackingManager:*'</pre>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Provider</th>
-            <th scope="col">Api loaded</th>
-            <th scope="col">TrackEvent</th>
-            <th scope="col">TrackPageView</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(provider, index) in providers" :key="index">
-          <td scope="row" v-text="index + 1"></td>
-          <td v-text="provider.id"></td>
-          <td>
-            <span v-if="provider.ready" class="icon glyphicon glyphicon-ok"></span>
-            <span v-if="!provider.ready" class="icon glyphicon glyphicon-remove"></span>
-          </td>
-          <td>
-            <button :disabled="!provider.ready" class="btn-sm btn-primary" @click="handleTrackEvent(provider.id, provider.data.event)">
-              Trigger event
-            </button>
-          </td>
-          <td>
-            <button :disabled="!provider.ready" class="btn-sm btn-primary" @click="handleTrackPageView(provider.id, provider.data.pageView)">
-              Trigger page view
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <p><strong>Note:</strong> Some providers will not work because they will only work with valid tracking id's or urls</p>
     </section>
   </main>
 </body>
