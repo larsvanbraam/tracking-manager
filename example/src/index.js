@@ -3,7 +3,6 @@ import Vue from 'vue/dist/vue.esm';
 import debug from 'debug';
 import TealiumProvider from '../../src/lib/tracking-provider/tealium/TealiumProvider';
 import BingProvider from '../../src/lib/tracking-provider/pixel/bing/BingProvider';
-import EnsightenProvider from '../../src/lib/tracking-provider/ensighten/EnsightenProvider';
 import FacebookProvider from '../../src/lib/tracking-provider/pixel/facebook/FacebookProvider';
 import ForensicsProvider from '../../src/lib/tracking-provider/forensics/ForensicsProvider';
 import GoogleAnalyticsProvider from '../../src/lib/tracking-provider/google-analytics/GoogleAnalyticsProvider';
@@ -55,29 +54,6 @@ new Vue({
             ev: 1,
           },
           pageView: {},
-        },
-      },
-      {
-        constructor: EnsightenProvider,
-        id: 'EnsightenProvider',
-        ready: false,
-        options: {
-          trackingName: 'foo',
-          pageName: 'bar',
-          trackingId: '00000',
-        },
-        data: {
-          event: {
-            elementName: 'foo',
-            eventName: 'bar',
-            eVarName: 'foo',
-            eVarValue: 'bar',
-            propName: 'foo',
-          },
-          pageView: {
-            page: 'foo',
-            ensightenPage: 'bar',
-          },
         },
       },
       {
@@ -194,7 +170,9 @@ new Vue({
           trackingPixelId: '00000',
         },
         data: {
-          event: {},
+          event: {
+            value: 0.01,
+          },
           pageView: {},
         },
       },

@@ -4,7 +4,6 @@ export { default as TealiumProvider } from './lib/tracking-provider/tealium/Teal
 export {
   default as BingTrackingPixelProvider,
 } from './lib/tracking-provider/pixel/bing/BingProvider';
-export { default as EnsightenProvider } from './lib/tracking-provider/ensighten/EnsightenProvider';
 export {
   default as FacebookTrackingPixelProvider,
 } from './lib/tracking-provider/pixel/facebook/FacebookProvider';
