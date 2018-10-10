@@ -1,11 +1,10 @@
 /* eslint-disable */
 import TrackingProvider from '../../example/src/TrackingProvider';
 
+// We store the spies in an object so we can use them later on
+const spies = {};
 
 describe('TrackingProviders', () => {
-  // We store the spies in an object so we can use them later on
-  const spies = {};
-
   beforeEach(() => {
     cy.visit('http://localhost:8080', {
       onLoad(window) {
@@ -30,7 +29,7 @@ describe('TrackingProviders', () => {
 
         // Trigger the click
         button.click().then(() => {
-          expect(spies[provider].trackEvent).to.be.called;
+          expect(spies[provider].trackEvent).to.be.calledOnce;
         });
       });
 
@@ -42,7 +41,7 @@ describe('TrackingProviders', () => {
 
         // Trigger the click
         button.click().then(() => {
-          expect(spies[provider].trackPageView).to.be.called;
+          expect(spies[provider].trackPageView).to.be.calledOnce;
         });
       });
     });
