@@ -4,3 +4,10 @@ export interface INativoProviderOptions {
    */
   trackingPixelId: string;
 }
+
+export interface INativoTrackEventData {
+  /**
+   * An optional float that can be added to the track event call
+   */
+  value?: number;
+}

@@ -1,7 +1,7 @@
 import debug from 'debug';
 import { LoadImageTask } from 'task-loader';
 import AbstractTrackingProvider from '../../AbstractTrackingProvider';
-import { INativoProviderOptions } from './INativoData';
+import { INativoProviderOptions, INativoTrackEventData } from './INativoData';
 import TrackingManager from '../../../TrackingManager';
 
 /**
@@ -36,13 +36,13 @@ export default class NativoProvider extends AbstractTrackingProvider<INativoProv
    *
    * @returns { Promise<void> }
    */
-  public trackEvent(): Promise<void> {
+  public trackEvent(data: INativoTrackEventData): Promise<void> {
     return this.providerReady
       .then(() => {
         const loadTask = new LoadImageTask({
           assets: `//jadserve.postrelease.com/conversion?ntv_pixel_id=${
             this.providerOptions.trackingPixelId
-          }&ntv_pixel_value=[optional_float]`,
+          }${data.value !== undefined ? `&ntv_pixel_value=${data.value}` : ''}`,
           cached: false,
         });
 
@@ -51,7 +51,7 @@ export default class NativoProvider extends AbstractTrackingProvider<INativoProv
         });
       })
       .then(() => this.logger(`trackEvent`))
-      .catch(() => this.logger(`trackEvent failed`));
+      .catch(() => this.logger(`Failed to load the tracking pixel`));
   }
 
   /**
