@@ -1,5 +1,6 @@
 /* eslint-disable no-new, import/no-extraneous-dependencies */
 import Vue from 'vue/dist/vue.esm';
+import debug from 'debug';
 import TealiumProvider from '../../src/lib/tracking-provider/tealium/TealiumProvider';
 import BingProvider from '../../src/lib/tracking-provider/pixel/bing/BingProvider';
 import EnsightenProvider from '../../src/lib/tracking-provider/ensighten/EnsightenProvider';
@@ -229,11 +230,18 @@ new Vue({
         },
       },
     ],
+    logs: [],
+  },
+  created() {
+    // Force enable the tracking manager logs
+    debug.enabled('TrackingManager:*');
+    // We want to display the debug logs in the DOM
+    this.hijackLogs();
   },
   mounted() {
     // Highlight the code
     Array.from(document.body.querySelectorAll('pre')).forEach(element => {
-      hljs.highlightBlock(element);
+      window.hljs.highlightBlock(element);
     });
 
     this.trackingManager = new TrackingManager();
@@ -259,6 +267,25 @@ new Vue({
       this.trackingManager.trackPageView({
         [providerId]: data,
       });
+    },
+    hijackLogs() {
+      // hijack the console.log method for example purposes
+      const cl = console.log;
+      window.console.log = (...args) => {
+        const values = args[0].split('%c');
+
+        // Strip out the first and last item because they contain white space and a %c character
+        values.shift();
+        values.pop();
+
+        this.logs.unshift({
+          namespace: values[0],
+          value: values[1],
+          data: values[2],
+        });
+
+        cl.apply(this, args);
+      };
     },
   },
 });

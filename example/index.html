@@ -26,6 +26,10 @@
       position: relative;
     }
 
+    .logs {
+      max-height: 200px;
+      overflow-y: scroll;
+    }
 
     .glyphicon-ok {
       color: green;
@@ -81,6 +85,21 @@
         </tbody>
       </table>
       <p><strong>Note:</strong> Some providers will not work because they will only work with valid tracking id's or urls</p>
+    </section>
+    <section>
+      <h3 id="logs">Logs</h3>
+      <ul class="list-group logs">
+        <li class="list-group-item" v-for="(log, index) in logs">
+          <h6 class="list-group-item-heading">
+            <span class="text-primary icon glyphicon glyphicon-chevron-right"></span>
+            <span class="event-type">
+              <strong v-html="log.namespace"></strong>
+              <span v-html="log.value"></span>
+            </span>
+            <pre v-if="log.data" v-html="log.data"></pre>
+          </h6>
+        </li>
+      </ul>
     </section>
     <section>
       <h3 id="introduction">Code</h3>
