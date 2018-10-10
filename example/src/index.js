@@ -1,4 +1,4 @@
-/* eslint-disable no-new */
+/* eslint-disable no-new, import/no-extraneous-dependencies */
 import Vue from 'vue/dist/vue.esm';
 import TrackingProvider from './TrackingProvider';
 import BingProvider from '../../src/lib/tracking-provider/pixel/bing/BingProvider';
@@ -18,7 +18,6 @@ import TrackingManager from '../../src/lib/TrackingManager';
 // Globally expose some objects so we can run tests against them.
 window.cypress = {};
 
-/* global hljs */
 new Vue({
   el: '#app',
   data: {
@@ -217,21 +216,20 @@ new Vue({
   mounted() {
     // Highlight the code
     Array.from(document.body.querySelectorAll('pre')).forEach(element => {
-      hljs.highlightBlock(element);
+      window.hljs.highlightBlock(element);
     });
 
     this.trackingManager = new TrackingManager();
 
-    // Expose for cypress
-    window.cypress.trackingManager = this.trackingManager;
-
     // Initialise all the providers
     this.providers.forEach(provider => {
       const instance = new provider.constructor(provider.options);
+
       // Mark it as ready once it's loaded
       instance.providerReady
         .then(() => Vue.set(provider, 'ready', true))
         .catch(() => Vue.set(provider, 'ready', false));
+
       // Add it to the tracking manager
       this.trackingManager.addProvider(provider.id, instance);
 
