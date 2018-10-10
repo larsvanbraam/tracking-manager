@@ -1,4 +1,4 @@
-/* global hljs */
+/* eslint-disable no-new, import/no-extraneous-dependencies */
 import Vue from 'vue/dist/vue.esm';
 import TealiumProvider from '../../src/lib/tracking-provider/tealium/TealiumProvider';
 import BingProvider from '../../src/lib/tracking-provider/pixel/bing/BingProvider';
@@ -15,7 +15,6 @@ import PardotProvider from '../../src/lib/tracking-provider/pardot/PardotProvide
 import TwitterProvider from '../../src/lib/tracking-provider/pixel/twitter/TwitterProvider';
 import TrackingManager from '../../src/lib/TrackingManager';
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   data: {
