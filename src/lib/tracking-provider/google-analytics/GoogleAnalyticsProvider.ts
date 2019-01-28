@@ -1,6 +1,10 @@
 import AbstractTrackingProvider from '../AbstractTrackingProvider';
 import debug from 'debug';
-import { IGoogleAnalyticsPageViewData, IGoogleAnalyticsProviderOptions, IGoogleAnalyticsTrackEventData } from './IGoogleAnalyticsData';
+import {
+  IGoogleAnalyticsPageViewData,
+  IGoogleAnalyticsProviderOptions,
+  IGoogleAnalyticsTrackEventData,
+} from './IGoogleAnalyticsData';
 import TrackingManager from '../../TrackingManager';
 
 /**
@@ -17,7 +21,9 @@ import TrackingManager from '../../TrackingManager';
  *
  * @class GoogleAnalyticsProvider
  */
-export default class GoogleAnalyticsProvider extends AbstractTrackingProvider<IGoogleAnalyticsProviderOptions> {
+export default class GoogleAnalyticsProvider extends AbstractTrackingProvider<
+  IGoogleAnalyticsProviderOptions
+> {
   /**
    * Namespace in which the google analytics is loaded
    */
@@ -67,15 +73,17 @@ export default class GoogleAnalyticsProvider extends AbstractTrackingProvider<IG
     return this.providerReady
       .then(() => {
         const ga = window[GoogleAnalyticsProvider._NAMESPACE];
+        const { category, action, label, value } = data;
 
-        if (isNaN(data.value) && data.value) {
-          ga('send', 'event', data.category, data.action, data.label, data.value);
-        } else {
-          if (data.label) {
-            ga('send', 'event', data.category, data.action, data.label);
-          } else {
-            ga('send', 'event', data.category, data.action);
+        if (value !== undefined) {
+          if (value === Math.floor(value) && Math.abs(value) !== Infinity) {
+            ga('send', 'event', category, action, label, value);
           }
+          throw new TypeError('Google Analytics event value must be an integer');
+        } else if (label) {
+          ga('send', 'event', category, action, label);
+        } else {
+          ga('send', 'event', category, action);
         }
       })
       .then(() => this.logger(`trackEvent: ${JSON.stringify(data)}`));
