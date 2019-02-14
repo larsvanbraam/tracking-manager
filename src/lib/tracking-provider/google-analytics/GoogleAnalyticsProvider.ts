@@ -78,8 +78,9 @@ export default class GoogleAnalyticsProvider extends AbstractTrackingProvider<
         if (value !== undefined) {
           if (value === Math.floor(value) && Math.abs(value) !== Infinity) {
             ga('send', 'event', category, action, label, value);
+          } else {
+            throw new TypeError('Google Analytics event value must be an integer');
           }
-          throw new TypeError('Google Analytics event value must be an integer');
         } else if (label) {
           ga('send', 'event', category, action, label);
         } else {
